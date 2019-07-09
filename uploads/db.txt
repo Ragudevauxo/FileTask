@@ -1,0 +1,218 @@
+mysql> select version();
++-----------+
+| version() |
++-----------+
+| 8.0.16    |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> create database EmployeeManagement;
+Query OK, 1 row affected (0.08 sec)
+
+mysql> use EmployeeManagement;
+Database changed
+mysql> create table Employee (id PRIMARY KEY INT AUTO_INCREMENT,
+    -> name VARCHAR(50) NOT NULL,
+    -> age TINYINT NOT NULL,
+    -> dob DATE,
+    -> place VARCHAR(50),
+    -> phone VARCHAR(15));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'PRIMARY KEY INT AUTO_INCREMENT,
+name VARCHAR(50) NOT NULL,
+age TINYINT NOT NULL,' at line 1
+mysql> create table Employee (id INT PRIMARY KEY  AUTO_INCREMENT,
+    -> name VARCHAR(50) NOT NULL,
+    -> age TINYINT NOT NULL,
+    -> place VARCHAR(50),
+    -> dob DATE,
+    -> phone VARCHAR(15));
+Query OK, 0 rows affected (0.83 sec)
+
+mysql> DESC EMPLOYEE;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| name  | varchar(50) | NO   |     | NULL    |                |
+| age   | tinyint(4)  | NO   |     | NULL    |                |
+| place | varchar(50) | YES  |     | NULL    |                |
+| dob   | date        | YES  |     | NULL    |                |
+| phone | varchar(15) | YES  |     | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+6 rows in set (0.01 sec)
+
+mysql> create table Department(deptId INT PRIMARY KEY ,
+    -> role VARCHAR(50));
+Query OK, 0 rows affected (0.40 sec)
+
+mysql> alter table employee rename column id to empid;
+Query OK, 0 rows affected (0.14 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employee;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| empid | int(11)     | NO   | PRI | NULL    | auto_increment |
+| name  | varchar(50) | NO   |     | NULL    |                |
+| age   | tinyint(4)  | NO   |     | NULL    |                |
+| place | varchar(50) | YES  |     | NULL    |                |
+| dob   | date        | YES  |     | NULL    |                |
+| phone | varchar(15) | YES  |     | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> alter table add deptid int ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'add deptid int' at line 1
+mysql> alter table employee add deptid int ;
+Query OK, 0 rows affected (0.23 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employee;
++--------+-------------+------+-----+---------+----------------+
+| Field  | Type        | Null | Key | Default | Extra          |
++--------+-------------+------+-----+---------+----------------+
+| empid  | int(11)     | NO   | PRI | NULL    | auto_increment |
+| name   | varchar(50) | NO   |     | NULL    |                |
+| age    | tinyint(4)  | NO   |     | NULL    |                |
+| place  | varchar(50) | YES  |     | NULL    |                |
+| dob    | date        | YES  |     | NULL    |                |
+| phone  | varchar(15) | YES  |     | NULL    |                |
+| deptid | int(11)     | YES  |     | NULL    |                |
++--------+-------------+------+-----+---------+----------------+
+7 rows in set (0.00 sec)
+
+mysql> desc department;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| deptId | int(11)     | NO   | PRI | NULL    |       |
+| role   | varchar(50) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> alter table department rename role to deptName
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'to deptName' at line 1
+mysql> alter table department rename column role to deptName
+    -> ;
+Query OK, 0 rows affected (0.20 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc department;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| deptId   | int(11)     | NO   | PRI | NULL    |       |
+| deptName | varchar(50) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> alter table employee add deptid int(11) ;
+ERROR 1060 (42S21): Duplicate column name 'deptid'
+mysql> alter table employee modify foreign key(deptid) references department(deptid);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'foreign key(deptid) references department(deptid)' at line 1
+mysql> alter table employee add foreign key(deptid) references department(deptid);
+Query OK, 0 rows affected (1.00 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc department;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| deptId   | int(11)     | NO   | PRI | NULL    |       |
+| deptName | varchar(50) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc employee;
++--------+-------------+------+-----+---------+----------------+
+| Field  | Type        | Null | Key | Default | Extra          |
++--------+-------------+------+-----+---------+----------------+
+| empid  | int(11)     | NO   | PRI | NULL    | auto_increment |
+| name   | varchar(50) | NO   |     | NULL    |                |
+| age    | tinyint(4)  | NO   |     | NULL    |                |
+| place  | varchar(50) | YES  |     | NULL    |                |
+| dob    | date        | YES  |     | NULL    |                |
+| phone  | varchar(15) | YES  |     | NULL    |                |
+| deptid | int(11)     | YES  | MUL | NULL    |                |
++--------+-------------+------+-----+---------+----------------+
+7 rows in set (0.00 sec)
+
+mysql> insert into department values(123,"HR");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> alter table employee modify empid int(11) primary key;
+ERROR 1068 (42000): Multiple primary key defined
+mysql> alter table employee drop primary key ;
+ERROR 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+mysql> alter table employee drop primary key , change empid empid int(11) ;
+Query OK, 0 rows affected (1.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employee;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| empid  | int(11)     | YES  |     | NULL    |       |
+| name   | varchar(50) | NO   |     | NULL    |       |
+| age    | tinyint(4)  | NO   |     | NULL    |       |
+| place  | varchar(50) | YES  |     | NULL    |       |
+| dob    | date        | YES  |     | NULL    |       |
+| phone  | varchar(15) | YES  |     | NULL    |       |
+| deptid | int(11)     | YES  | MUL | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+7 rows in set (0.02 sec)
+
+mysql> alter table employee add primary key(empid);
+Query OK, 0 rows affected (0.80 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employee;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| empid  | int(11)     | NO   | PRI | NULL    |       |
+| name   | varchar(50) | NO   |     | NULL    |       |
+| age    | tinyint(4)  | NO   |     | NULL    |       |
+| place  | varchar(50) | YES  |     | NULL    |       |
+| dob    | date        | YES  |     | NULL    |       |
+| phone  | varchar(15) | YES  |     | NULL    |       |
+| deptid | int(11)     | YES  | MUL | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+7 rows in set (0.31 sec)
+
+mysql> insert into employee(123,"bas","23","chennai",curdate(),"352525252",123);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '123,"bas","23","chennai",curdate(),"352525252",123)' at line 1
+mysql> insert into employee(123,"bas",23,"chennai",curdate(),"352525252",123);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '123,"bas",23,"chennai",curdate(),"352525252",123)' at line 1
+mysql> insert into employee values (123,"bas",23,"chennai",curdate(),"352525252",123);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> select * from employee;
++-------+------+-----+---------+------------+-----------+--------+
+| empid | name | age | place   | dob        | phone     | deptid |
++-------+------+-----+---------+------------+-----------+--------+
+|   123 | bas  |  23 | chennai | 2019-06-21 | 352525252 |    123 |
++-------+------+-----+---------+------------+-----------+--------+
+1 row in set (0.00 sec)
+
+mysql> select date_format(dob,'%d-%m-%y');
+ERROR 1054 (42S22): Unknown column 'dob' in 'field list'
+mysql> select date_format(dob,'%d-%m-%y')from employee;
++-----------------------------+
+| date_format(dob,'%d-%m-%y') |
++-----------------------------+
+| 21-06-19                    |
++-----------------------------+
+1 row in set (0.00 sec)
+
+mysql> select date_format(dob,'%d-%m-%Y')from employee;
++-----------------------------+
+| date_format(dob,'%d-%m-%Y') |
++-----------------------------+
+| 21-06-2019                  |
++-----------------------------+
+1 row in set (0.00 sec)
+
+mysql>
